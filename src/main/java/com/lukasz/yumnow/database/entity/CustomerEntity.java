@@ -36,6 +36,6 @@ public class CustomerEntity {
     @OneToMany(mappedBy = "customer")
     private Set<OpinionEntity> opinions;
 
-    @OneToMany(mappedBy= "customer")
+    @OneToMany(mappedBy = "customer")
     private Set<PurchaseEntity> purchases;
 }

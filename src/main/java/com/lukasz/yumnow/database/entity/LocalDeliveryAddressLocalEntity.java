@@ -16,14 +16,14 @@ public class LocalDeliveryAddressLocalEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="local_delivery_address_local_id")
+    @Column(name = "local_delivery_address_local_id")
     private Integer localDeliveryAddressLocalId;
 
     @ManyToOne
-    @JoinColumn(name="local_id")
+    @JoinColumn(name = "local_id")
     private LocalEntity local;
 
     @ManyToOne
-    @JoinColumn(name="lcoal_delivery_address_id")
+    @JoinColumn(name = "lcoal_delivery_address_id")
     private LocalDeliveryAddressEntity localDeliveryAddress;
 }
