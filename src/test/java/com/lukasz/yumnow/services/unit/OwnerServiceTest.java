@@ -1,5 +1,6 @@
-package com.lukasz.yumnow.buisness;
+package com.lukasz.yumnow.services.unit;
 
+import com.lukasz.yumnow.buisness.OwnerService;
 import com.lukasz.yumnow.buisness.dao.OwnerDao;
 import com.lukasz.yumnow.domain.Owner;
 import lombok.RequiredArgsConstructor;
