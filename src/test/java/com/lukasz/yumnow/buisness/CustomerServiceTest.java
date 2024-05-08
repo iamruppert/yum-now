@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,8 +35,8 @@ class CustomerServiceTest {
                 .surname("Example")
                 .email("peter@gmail.com")
                 .address("Polna 3")
-                .opinions(null)
-                .purchases(null)
+                .opinions(new HashSet<>())
+                .purchases(new HashSet<>())
                 .build();
 
         when(customerDao.findCustomerByEmail(nonExistingCustomer.getEmail())).thenReturn(Optional.empty());
@@ -51,7 +52,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void shouldFailWhenSavingExistingCustomer(){
+    void shouldFailWhenSavingExistingCustomer() {
 
         //given
         Customer existingCustomer = Customer.builder()
@@ -59,8 +60,8 @@ class CustomerServiceTest {
                 .surname("Example")
                 .email("peter@gmail.com")
                 .address("Polna 3")
-                .opinions(null)
-                .purchases(null)
+                .opinions(new HashSet<>())
+                .purchases(new HashSet<>())
                 .build();
 
         when(customerDao.findCustomerByEmail(existingCustomer.getEmail())).thenReturn(Optional.of(existingCustomer));
