@@ -1,16 +1,17 @@
 package com.lukasz.yumnow.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @With
 @Builder
+@Getter
+@Setter
+@EqualsAndHashCode(of= "localDeliveryAddressId")
+@ToString(of= {"localDeliveryAddressId", "code", "country","city","postalCode","street"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "local_delivery_addess")

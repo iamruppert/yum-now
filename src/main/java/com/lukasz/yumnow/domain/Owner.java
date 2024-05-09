@@ -1,6 +1,5 @@
 package com.lukasz.yumnow.domain;
 
-import com.lukasz.yumnow.database.entity.LocalEntity;
 import lombok.*;
 
 import java.util.Set;
@@ -17,6 +16,6 @@ public class Owner {
     String surname;
     String email;
     String address;
-    Set<LocalEntity> locals;
+    Set<Local> locals;
 
 }

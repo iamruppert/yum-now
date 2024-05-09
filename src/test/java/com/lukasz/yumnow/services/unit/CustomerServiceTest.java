@@ -40,7 +40,7 @@ class CustomerServiceTest {
                 .purchases(new HashSet<>())
                 .build();
 
-        when(customerDao.findCustomerByEmail(nonExistingCustomer.getEmail())).thenReturn(Optional.empty());
+        when(customerDao.findByEmail(nonExistingCustomer.getEmail())).thenReturn(Optional.empty());
         when(customerDao.create(nonExistingCustomer)).thenReturn(nonExistingCustomer);
 
         //when
@@ -48,7 +48,7 @@ class CustomerServiceTest {
 
         //then
         assertEquals(nonExistingCustomer, createdCustomer);
-        verify(customerDao, times(1)).findCustomerByEmail(nonExistingCustomer.getEmail());
+        verify(customerDao, times(1)).findByEmail(nonExistingCustomer.getEmail());
         verify(customerDao, times(1)).create(nonExistingCustomer);
     }
 
@@ -65,7 +65,7 @@ class CustomerServiceTest {
                 .purchases(new HashSet<>())
                 .build();
 
-        when(customerDao.findCustomerByEmail(existingCustomer.getEmail())).thenReturn(Optional.of(existingCustomer));
+        when(customerDao.findByEmail(existingCustomer.getEmail())).thenReturn(Optional.of(existingCustomer));
 
         //when, then
         assertThrows(RuntimeException.class, () -> customerService.create(existingCustomer));

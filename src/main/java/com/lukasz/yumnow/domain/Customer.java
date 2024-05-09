@@ -1,7 +1,5 @@
 package com.lukasz.yumnow.domain;
 
-import com.lukasz.yumnow.database.entity.OpinionEntity;
-import com.lukasz.yumnow.database.entity.PurchaseEntity;
 import lombok.*;
 
 import java.util.Set;
@@ -18,7 +16,7 @@ public class Customer {
     String surname;
     String email;
     String address;
-    Set<OpinionEntity> opinions;
-    Set<PurchaseEntity> purchases;
+    Set<Opinion> opinions;
+    Set<Purchase> purchases;
 
 }

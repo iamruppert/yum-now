@@ -14,8 +14,8 @@ public class CustomerService {
 
     private final CustomerDao customerDao;
 
-    public Customer findCustomerByEmail(String email) {
-        Optional<Customer> optionalCustomer = customerDao.findCustomerByEmail(email);
+    public Customer findByEmail(String email) {
+        Optional<Customer> optionalCustomer = customerDao.findByEmail(email);
         if (optionalCustomer.isPresent()) {
             return optionalCustomer.get();
         } else throw new RuntimeException("Cannot find customer with email: [%s]".formatted(email));
@@ -24,7 +24,7 @@ public class CustomerService {
     @Transactional
     public Customer create(Customer customer) {
 
-        Optional<Customer> customerOptional = customerDao.findCustomerByEmail(customer.getEmail());
+        Optional<Customer> customerOptional = customerDao.findByEmail(customer.getEmail());
 
         if (customerOptional.isPresent()) {
             throw new RuntimeException("Customer with email: [%s] already exists.".formatted(customer.getEmail()));

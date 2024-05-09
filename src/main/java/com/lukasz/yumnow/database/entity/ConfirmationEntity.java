@@ -1,15 +1,15 @@
 package com.lukasz.yumnow.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
-@With
+@Getter
+@Setter
+@EqualsAndHashCode(of= "confirmationNumber")
+@ToString(of= {"confirmationId", "confirmationNumber", "totalPrice"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

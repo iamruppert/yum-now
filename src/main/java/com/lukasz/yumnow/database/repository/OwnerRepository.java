@@ -28,14 +28,15 @@ public class OwnerRepository implements OwnerDao {
     }
 
     @Override
-    public Optional<Owner> findOwnerByEmail(String email) {
-        Optional<OwnerEntity> optionalOwner = ownerJpaRepository.findOwnerEntityByEmail(email);
-        if (optionalOwner.isPresent()) {
-            OwnerEntity ownerEntityToMap = optionalOwner.get();
-            Owner owner = ownerMapper.mapFromEntity(ownerEntityToMap);
-            return Optional.of(owner);
-        } else {
-            return Optional.empty();
-        }
+    public Optional<Owner> findByEmail(String email) {
+        return ownerJpaRepository.findByEmail(email).map(ownerMapper::mapFromEntity);
+//        Optional<OwnerEntity> optionalOwner = ownerJpaRepository.findByEmail(email);
+//        if (optionalOwner.isPresent()) {
+//            OwnerEntity ownerEntityToMap = optionalOwner.get();
+//            Owner owner = ownerMapper.mapFromEntity(ownerEntityToMap);
+//            return Optional.of(owner);
+//        } else {
+//            return Optional.empty();
+//        }
     }
 }

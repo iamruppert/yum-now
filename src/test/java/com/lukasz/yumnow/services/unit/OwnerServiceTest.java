@@ -38,7 +38,7 @@ class OwnerServiceTest {
                 .locals(new HashSet<>())
                 .build();
 
-        when(ownerDao.findOwnerByEmail(nonExistingOwner.getEmail())).thenReturn(Optional.empty());
+        when(ownerDao.findByEmail(nonExistingOwner.getEmail())).thenReturn(Optional.empty());
         when(ownerDao.create(nonExistingOwner)).thenReturn(nonExistingOwner);
 
         //when
@@ -46,7 +46,7 @@ class OwnerServiceTest {
 
         //then
         assertEquals(nonExistingOwner, createdOwner);
-        verify(ownerDao, times(1)).findOwnerByEmail(nonExistingOwner.getEmail());
+        verify(ownerDao, times(1)).findByEmail(nonExistingOwner.getEmail());
         verify(ownerDao, times(1)).create(nonExistingOwner);
 
     }
@@ -61,7 +61,7 @@ class OwnerServiceTest {
                 .address("Polna 3")
                 .build();
 
-        when(ownerDao.findOwnerByEmail(existingOwner.getEmail())).thenReturn(Optional.of(existingOwner));
+        when(ownerDao.findByEmail(existingOwner.getEmail())).thenReturn(Optional.of(existingOwner));
 
         //when, then
         assertThrows(RuntimeException.class, () -> ownerService.create(existingOwner));

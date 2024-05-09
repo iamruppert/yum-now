@@ -1,14 +1,15 @@
 package com.lukasz.yumnow.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 @Entity
 @With
 @Builder
+@Getter
+@Setter
+@EqualsAndHashCode(of= "opinionId")
+@ToString(of= {"opinionId", "description", "stars"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "opinion")

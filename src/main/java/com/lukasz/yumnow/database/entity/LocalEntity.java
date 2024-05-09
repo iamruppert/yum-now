@@ -1,16 +1,16 @@
 package com.lukasz.yumnow.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
-@With
+@Setter
 @Builder
+@Getter
+@EqualsAndHashCode(of= "localId")
+@ToString(of= {"localId", "name", "address","description"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "local")
@@ -41,7 +41,7 @@ public class LocalEntity {
     private Set<FoodEntity> foods;
 
     @OneToMany(mappedBy = "local")
-    private Set<PurchaseEntity> purchaseEntitySet;
+    private Set<PurchaseEntity> purchases;
 
     @OneToMany(mappedBy = "local")
     private Set<LocalDeliveryAddressLocalEntity> localDeliveryAddressLocals;

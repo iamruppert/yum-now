@@ -1,10 +1,7 @@
 package com.lukasz.yumnow.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 import java.util.Set;
 
@@ -12,6 +9,10 @@ import java.util.Set;
 @With
 @Builder
 @NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of= "code")
+@ToString(of= {"deliveryAddressId", "code", "country","city","postalCode","buildingNumber","apartmentNumber"})
 @AllArgsConstructor
 @Table(name = "delivery_address")
 public class DeliveryAddressEntity {

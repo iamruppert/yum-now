@@ -27,7 +27,7 @@ public class CustomerRepository implements CustomerDao {
     }
 
     @Override
-    public Optional<Customer> findCustomerByEmail(String email) {
+    public Optional<Customer> findByEmail(String email) {
         Optional<CustomerEntity> customerOptional = customerJpaRepository.findCustomerEntityByEmail(email);
         if (customerOptional.isPresent()) {
             CustomerEntity customerEntityToMap = customerOptional.get();

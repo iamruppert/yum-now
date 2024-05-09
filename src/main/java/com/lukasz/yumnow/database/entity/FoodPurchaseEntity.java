@@ -1,16 +1,17 @@
 package com.lukasz.yumnow.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
 @With
 @Builder
+@Getter
+@Setter
+@EqualsAndHashCode(of= "foodPurchaseId")
+@ToString(of= {"foodPurchaseId", "quantity", "totalPrice"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "food_purchase")

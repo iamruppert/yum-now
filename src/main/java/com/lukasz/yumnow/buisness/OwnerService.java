@@ -14,8 +14,8 @@ public class OwnerService {
 
     private final OwnerDao ownerDao;
 
-    public Owner findOwnerByEmail(String email){
-        Optional<Owner> optionalOwner = ownerDao.findOwnerByEmail(email);
+    public Owner findByEmail(String email){
+        Optional<Owner> optionalOwner = ownerDao.findByEmail(email);
         if(optionalOwner.isPresent()){
             return optionalOwner.get();
         }
@@ -26,7 +26,7 @@ public class OwnerService {
 
     @Transactional
     public Owner create(Owner owner){
-        Optional<Owner> optionalOwner = ownerDao.findOwnerByEmail(owner.getEmail());
+        Optional<Owner> optionalOwner = ownerDao.findByEmail(owner.getEmail());
 
         if(optionalOwner.isPresent()){
             throw new RuntimeException("Owner with email: [%s] already exists.".formatted(owner.getEmail()));
