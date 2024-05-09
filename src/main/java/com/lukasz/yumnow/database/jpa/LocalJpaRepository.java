@@ -17,7 +17,7 @@ public interface LocalJpaRepository extends JpaRepository<LocalEntity, Integer> 
                     "opinions",
                     "foods",
                     "purchases",
-                    "localDeliveryAddressLocals",
+                    "localDeliveryAddresses",
             }
     )
     Optional<LocalEntity> findByName(String name);

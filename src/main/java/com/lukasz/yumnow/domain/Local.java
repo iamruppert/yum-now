@@ -1,5 +1,6 @@
 package com.lukasz.yumnow.domain;
 
+import com.lukasz.yumnow.database.entity.LocalDeliveryAddressEntity;
 import lombok.*;
 
 import java.util.Set;
@@ -19,5 +20,5 @@ public class Local {
     Set<Opinion> opinions;
     Set<Food> foods;
     Set<Purchase> purchases;
-    Set<LocalDeliveryAddressLocal> localDeliveryAddressLocals;
+    Set<LocalDeliveryAddress> localDeliveryAddresses;
 }

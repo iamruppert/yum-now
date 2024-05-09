@@ -31,7 +31,7 @@ public class LocalService {
         Owner owner = ownerService.findByEmail(email);
 
         if (optionalLocal.isPresent()) {
-            throw new RuntimeException("Local with name [%s] already exists.");
+            throw new RuntimeException("Local with name [%s] already exists.".formatted(local.getName()));
         } else {
 
             Local localToSave = Local.builder()
@@ -42,7 +42,7 @@ public class LocalService {
                     .opinions(new HashSet<>())
                     .foods(new HashSet<>())
                     .purchases(new HashSet<>())
-                    .localDeliveryAddressLocals(new HashSet<>())
+                    .localDeliveryAddresses(new HashSet<>())
                     .build();
 
             return localDao.create(localToSave);

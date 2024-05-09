@@ -41,7 +41,7 @@ public class PurchaseEntity {
     private LocalEntity local;
 
     @ManyToOne
-    @JoinColumn(name = "delivery_addrees_id")
+    @JoinColumn(name = "delivery_address_id")
     private DeliveryAddressEntity deliveryAddress;
 
     @OneToOne(mappedBy = "purchase")

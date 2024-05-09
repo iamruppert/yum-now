@@ -1,5 +1,6 @@
 package com.lukasz.yumnow.database.entity;
 
+import com.lukasz.yumnow.domain.LocalDeliveryAddress;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -43,7 +44,12 @@ public class LocalEntity {
     @OneToMany(mappedBy = "local")
     private Set<PurchaseEntity> purchases;
 
-    @OneToMany(mappedBy = "local")
-    private Set<LocalDeliveryAddressLocalEntity> localDeliveryAddressLocals;
+    @ManyToMany
+    @JoinTable(
+            name = "local_local_delivery_address",
+            joinColumns = {@JoinColumn(name = "local_delivery_address_id")},
+            inverseJoinColumns = {@JoinColumn(name = "local_id")}
+    )
+    private Set<LocalDeliveryAddressEntity> localDeliveryAddresses;
 
 }

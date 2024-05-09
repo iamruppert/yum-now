@@ -13,7 +13,7 @@ public interface LocalMapper {
     @Mapping(target = "opinions", ignore = true)
     @Mapping(target = "foods", ignore = true)
     @Mapping(target = "purchases", ignore = true)
-    @Mapping(target = "localDeliveryAddressLocals", ignore = true)
+    @Mapping(target = "localDeliveryAddresses", ignore = true)
     Local mapFromEntity(LocalEntity entity);
 
     LocalEntity mapToEntity(Local local);

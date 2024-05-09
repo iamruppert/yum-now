@@ -1,5 +1,6 @@
 package com.lukasz.yumnow.database.entity;
 
+import com.lukasz.yumnow.domain.Local;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,7 +15,7 @@ import java.util.Set;
 @ToString(of= {"localDeliveryAddressId", "code", "country","city","postalCode","street"})
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "local_delivery_addess")
+@Table(name = "local_delivery_address")
 public class LocalDeliveryAddressEntity {
 
     @Id
@@ -37,7 +38,7 @@ public class LocalDeliveryAddressEntity {
     @Column(name = "street")
     private String street;
 
-    @OneToMany(mappedBy = "localDeliveryAddress")
-    private Set<LocalDeliveryAddressLocalEntity> localDeliveryAddressLocals;
+    @ManyToMany(mappedBy = "localDeliveryAddresses")
+    private Set<LocalEntity> locals;
 
 }
