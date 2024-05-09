@@ -44,12 +44,7 @@ public class LocalEntity {
     @OneToMany(mappedBy = "local")
     private Set<PurchaseEntity> purchases;
 
-    @ManyToMany
-    @JoinTable(
-            name = "local_local_delivery_address",
-            joinColumns = {@JoinColumn(name = "local_delivery_address_id")},
-            inverseJoinColumns = {@JoinColumn(name = "local_id")}
-    )
+    @ManyToMany(mappedBy = "locals")
     private Set<LocalDeliveryAddressEntity> localDeliveryAddresses;
 
 }

@@ -38,7 +38,12 @@ public class LocalDeliveryAddressEntity {
     @Column(name = "street")
     private String street;
 
-    @ManyToMany(mappedBy = "localDeliveryAddresses")
+    @ManyToMany
+    @JoinTable(
+            name = "local_local_delivery_address",
+            joinColumns = {@JoinColumn(name = "local_delivery_address_id")},
+            inverseJoinColumns = {@JoinColumn(name = "local_id")}
+    )
     private Set<LocalEntity> locals;
 
 }

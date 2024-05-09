@@ -11,13 +11,14 @@ import java.util.Optional;
 public interface LocalJpaRepository extends JpaRepository<LocalEntity, Integer> {
 
     @EntityGraph(
-            type = EntityGraph.EntityGraphType.FETCH,
+            type = EntityGraph.EntityGraphType.LOAD,
             attributePaths = {
                     "owner",
                     "opinions",
                     "foods",
                     "purchases",
                     "localDeliveryAddresses",
+                    "localDeliveryAddresses.locals",
             }
     )
     Optional<LocalEntity> findByName(String name);

@@ -6,5 +6,6 @@ CREATE TABLE local_delivery_address
     city                      VARCHAR(255) NOT NULL,
     postal_code               VARCHAR(255) NOT NULL,
     street                    VARCHAR(255) NOT NULL,
-    PRIMARY KEY (local_delivery_address_id)
+    PRIMARY KEY (local_delivery_address_id),
+    UNIQUE (code)
 )
