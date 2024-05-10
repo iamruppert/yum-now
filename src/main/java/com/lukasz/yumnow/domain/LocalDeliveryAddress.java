@@ -9,14 +9,13 @@ import java.util.Set;
 @Value
 @Builder
 @EqualsAndHashCode(of = "code")
-@ToString(of = {"localDeliveryAddressId", "code", "country", "city", "postalCode", "street"})
+@ToString(of = {"localDeliveryAddressId", "code", "country", "city", "street"})
 public class LocalDeliveryAddress {
 
     Integer localDeliveryAddressId;
     String code;
     String country;
     String city;
-    String postalCode;
     String street;
     Set<Local> locals;
 

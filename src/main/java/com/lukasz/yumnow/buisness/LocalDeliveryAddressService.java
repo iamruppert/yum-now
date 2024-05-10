@@ -26,9 +26,8 @@ public class LocalDeliveryAddressService {
                 .code(generateDeliveryAddressCode(localDeliveryAddress))
                 .country(localDeliveryAddress.getCountry())
                 .city(localDeliveryAddress.getCity())
-                .postalCode(localDeliveryAddress.getPostalCode())
                 .street(localDeliveryAddress.getStreet())
-                .locals(buildLocals(local, localDeliveryAddress))
+                .locals(new HashSet<>())
                 .build();
 
         List<LocalDeliveryAddress> list = local.getLocalDeliveryAddresses().stream()

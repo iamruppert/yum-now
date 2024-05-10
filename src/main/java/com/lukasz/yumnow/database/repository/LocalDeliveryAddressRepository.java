@@ -25,13 +25,25 @@ public class LocalDeliveryAddressRepository implements LocalDeliveryAddressDao {
 
     @Override
     public LocalDeliveryAddress create(Local local, LocalDeliveryAddress localDeliveryAddress) {
-        LocalEntity localEntity = localMapper.mapToEntity(local);
-        LocalEntity retrieved = localJpaRepository.findByName(localEntity.getName()).orElseThrow();
-        LocalDeliveryAddressEntity entity = localDeliveryAddressMapper.mapToEntity(localDeliveryAddress);
-        entity.getLocals().add(retrieved);
-        localDeliveryAddressJpaRepository.save(entity);
-//        localJpaRepository.save(retrieved);
-        return localDeliveryAddressMapper.mapFromEntity(entity);
+        LocalEntity localEntity = localJpaRepository.findByName(local.getName()).get();
+//        LocalEntity localEntity = localMapper.mapToEntity(local);
+        Optional<LocalDeliveryAddressEntity> optionalDeliveryAddress = localDeliveryAddressJpaRepository.findByCode(localDeliveryAddress.getCode());
+        if(optionalDeliveryAddress.isPresent()){
+            LocalDeliveryAddressEntity localDeliveryAddressEntity = optionalDeliveryAddress.get();
+            localDeliveryAddressEntity.getLocals().add(localEntity);
+            localDeliveryAddressJpaRepository.save(localDeliveryAddressEntity);
+//            localEntity.getLocalDeliveryAddresses().add(localDeliveryAddressEntity);
+//            localJpaRepository.save(localEntity);
+            return localDeliveryAddressMapper.mapFromEntity(localDeliveryAddressEntity);
+        }
+        else{
+            LocalDeliveryAddressEntity localDeliveryAddressEntity = localDeliveryAddressMapper.mapToEntity(localDeliveryAddress);
+            localDeliveryAddressEntity.getLocals().add(localEntity);
+            localEntity.getLocalDeliveryAddresses().add(localDeliveryAddressEntity);
+            localJpaRepository.save(localEntity);
+            localDeliveryAddressJpaRepository.save(localDeliveryAddressEntity);
+            return localDeliveryAddressMapper.mapFromEntity(localDeliveryAddressEntity);
+        }
     }
 
 

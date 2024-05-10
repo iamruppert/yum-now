@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface LocalJpaRepository extends JpaRepository<LocalEntity, Integer> {
 
     @EntityGraph(
-            type = EntityGraph.EntityGraphType.LOAD,
+            type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {
                     "owner",
                     "opinions",

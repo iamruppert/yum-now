@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode(of= "localDeliveryAddressId")
-@ToString(of= {"localDeliveryAddressId", "code", "country","city","postalCode","street"})
+@ToString(of= {"localDeliveryAddressId", "code", "country","city","street"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "local_delivery_address")
@@ -31,9 +31,6 @@ public class LocalDeliveryAddressEntity {
 
     @Column(name = "city")
     private String city;
-
-    @Column(name = "postal_code")
-    private String postalCode;
 
     @Column(name = "street")
     private String street;
