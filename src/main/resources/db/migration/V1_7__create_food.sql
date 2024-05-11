@@ -1,6 +1,7 @@
 CREATE TABLE food
 (
     food_id     SERIAL        NOT NULL,
+    code        VARCHAR(255)  NOT NULL,
     name        VARCHAR(255)  NOT NULL,
     category    VARCHAR(255)  NOT NULL,
     description TEXT          NOT NULL,
@@ -8,6 +9,7 @@ CREATE TABLE food
     calories    INT           NOT NULL,
     local_id    INT           NOT NULL,
     PRIMARY KEY (food_id),
+    UNIQUE(code),
     CONSTRAINT fk_food_local
         FOREIGN KEY (local_id)
             REFERENCES local (local_id)

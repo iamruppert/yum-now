@@ -1,6 +1,5 @@
 package com.lukasz.yumnow.domain;
 
-import com.lukasz.yumnow.database.entity.LocalDeliveryAddressEntity;
 import lombok.*;
 
 import java.util.Set;

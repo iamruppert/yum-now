@@ -1,6 +1,5 @@
 package com.lukasz.yumnow.domain;
 
-import com.lukasz.yumnow.database.entity.LocalEntity;
 import lombok.*;
 
 import java.util.Set;

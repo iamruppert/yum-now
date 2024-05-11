@@ -1,6 +1,5 @@
 package com.lukasz.yumnow.buisness.dao;
 
-import com.lukasz.yumnow.domain.Customer;
 import com.lukasz.yumnow.domain.Local;
 import com.lukasz.yumnow.domain.LocalDeliveryAddress;
 import org.springframework.stereotype.Component;

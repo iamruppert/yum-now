@@ -8,11 +8,12 @@ import java.util.Set;
 @With
 @Value
 @Builder
-@EqualsAndHashCode(of = "name")
-@ToString(of = {"foodId", "name", "category", "description", "price", "calories"})
+@EqualsAndHashCode(of = "code")
+@ToString(of = {"foodId","code", "name", "category", "description", "price", "calories"})
 public class Food {
 
     Integer foodId;
+    String code;
     String name;
     String category;
     String description;

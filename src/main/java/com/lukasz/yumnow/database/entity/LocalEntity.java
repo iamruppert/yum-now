@@ -1,6 +1,5 @@
 package com.lukasz.yumnow.database.entity;
 
-import com.lukasz.yumnow.domain.LocalDeliveryAddress;
 import jakarta.persistence.*;
 import lombok.*;
 

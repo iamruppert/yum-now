@@ -1,7 +1,6 @@
 package com.lukasz.yumnow.buisness;
 
 import com.lukasz.yumnow.buisness.dao.LocalDeliveryAddressDao;
-import com.lukasz.yumnow.database.entity.LocalEntity;
 import com.lukasz.yumnow.domain.Local;
 import com.lukasz.yumnow.domain.LocalDeliveryAddress;
 import lombok.AllArgsConstructor;
@@ -43,8 +42,6 @@ public class LocalDeliveryAddressService {
         }
 
     }
-
-
 
 
     private String generateDeliveryAddressCode(LocalDeliveryAddress deliveryAddress) {

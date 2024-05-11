@@ -11,8 +11,8 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
-@EqualsAndHashCode(of= "foodId")
-@ToString(of= {"foodId", "name", "category","description","price","calories"})
+@EqualsAndHashCode(of = "code")
+@ToString(of = {"foodId", "code", "name", "category", "description", "price", "calories"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "food")
@@ -22,6 +22,9 @@ public class FoodEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "food_id")
     private Integer foodId;
+
+    @Column(name = "code")
+    private String code;
 
     @Column(name = "name")
     private String name;
