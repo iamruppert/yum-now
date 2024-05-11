@@ -8,6 +8,5 @@ CREATE TABLE delivery_address
     street              VARCHAR(255) NOT NULL,
     building_number     INT          NOT NULL,
     apartment_number    INT,
-    PRIMARY KEY (delivery_address_id),
-    UNIQUE (code)
+    PRIMARY KEY (delivery_address_id)
 );
