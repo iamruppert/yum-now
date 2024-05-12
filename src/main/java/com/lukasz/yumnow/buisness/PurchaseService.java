@@ -26,6 +26,20 @@ public class PurchaseService {
         Customer customer = customerService.findByEmail(email);
 
 
+        return createPurchase(customer, local, foods, deliveryAddress);
+
+    }
+
+    public Purchase createPurchaseWithNoAccount(Customer customer, String localName, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
+
+        Local local = localService.findByName(localName);
+        Customer newCustomer = customerService.create(customer);
+
+        return createPurchase(newCustomer, local, foods, deliveryAddress);
+    }
+
+    public Purchase createPurchase(Customer customer, Local local, List<FoodPurchase> foods, DeliveryAddress deliveryAddress){
+
         List<FoodPurchase> updatedFoods = foods.stream()
                 .map(food -> food.withTotalPrice(BigDecimal.valueOf(food.getQuantity()).multiply(food.getFood().getPrice())))
                 .toList();
@@ -71,8 +85,4 @@ public class PurchaseService {
                         deliveryAddress.getCity() + '/' +
                         deliveryAddress.getStreet();
     }
-
-//    public Purchase createNextTimePurchase(String email, String localName, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
-//
-//    }
 }
