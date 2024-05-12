@@ -26,14 +26,11 @@ public class LocalDeliveryAddressRepository implements LocalDeliveryAddressDao {
     @Override
     public LocalDeliveryAddress create(Local local, LocalDeliveryAddress localDeliveryAddress) {
         LocalEntity localEntity = localJpaRepository.findByName(local.getName()).get();
-//        LocalEntity localEntity = localMapper.mapToEntity(local);
         Optional<LocalDeliveryAddressEntity> optionalDeliveryAddress = localDeliveryAddressJpaRepository.findByCode(localDeliveryAddress.getCode());
         if(optionalDeliveryAddress.isPresent()){
             LocalDeliveryAddressEntity localDeliveryAddressEntity = optionalDeliveryAddress.get();
             localDeliveryAddressEntity.getLocals().add(localEntity);
             localDeliveryAddressJpaRepository.save(localDeliveryAddressEntity);
-//            localEntity.getLocalDeliveryAddresses().add(localDeliveryAddressEntity);
-//            localJpaRepository.save(localEntity);
             return localDeliveryAddressMapper.mapFromEntity(localDeliveryAddressEntity);
         }
         else{

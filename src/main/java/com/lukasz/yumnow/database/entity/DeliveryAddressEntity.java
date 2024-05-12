@@ -11,7 +11,15 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of= "code")
+@EqualsAndHashCode(of= {
+        "code",
+        "country",
+        "city",
+        "postalCode",
+        "street",
+        "buildingNumber",
+        "apartmentNumber"
+})
 @ToString(of= {"deliveryAddressId", "code", "country","city","postalCode","buildingNumber","apartmentNumber"})
 @AllArgsConstructor
 @Table(name = "delivery_address")
