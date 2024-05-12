@@ -18,11 +18,13 @@ public class PurchaseService {
     private final PurchaseDao purchaseDao;
     private final LocalService localService;
     private final CustomerService customerService;
+    private final FoodService foodService;
 
 
     public Purchase createPurchaseWithAccount(String email, String localName, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
         Local local = localService.findByName(localName);
         Customer customer = customerService.findByEmail(email);
+
 
         List<FoodPurchase> updatedFoods = foods.stream()
                 .map(food -> food.withTotalPrice(BigDecimal.valueOf(food.getQuantity()).multiply(food.getFood().getPrice())))

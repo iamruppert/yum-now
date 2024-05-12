@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -53,28 +54,35 @@ public class PurchaseRepository implements PurchaseDao {
         if (optionalDeliveryAddressEntity.isPresent()) {
             PurchaseEntity purchaseEntity = purchaseMapper.mapToEntity(purchase);
             purchaseEntity.setDeliveryAddress(optionalDeliveryAddressEntity.get());
-            PurchaseEntity saved = purchaseJpaRepository.save(purchaseEntity);
+            PurchaseEntity saved = purchaseJpaRepository.saveAndFlush(purchaseEntity);
 
-            Set<FoodPurchaseEntity> foodPurchaseEntities = saved.getFoodPurchases();
-            List<FoodPurchaseEntity> collect = foodPurchaseEntities.stream()
-                    .map(v -> v.withPurchase(saved))
-                    .toList();
-
-
-            Set<FoodPurchaseEntity> collect1 = collect.stream().map(foodPurchaseJpaRepository::saveAndFlush).collect(Collectors.toSet());
+            purchase.getFoodPurchases().stream()
+                    .map(foodPurchaseMapper::mapToEntity)
+                    .forEach(entity->{
+                        entity.setPurchase(saved);
+                        foodPurchaseJpaRepository.saveAndFlush(entity);
+                    });
 
             return purchaseMapper.mapFromEntity(saved);
-        } else {
+        }
+        else {
             DeliveryAddressEntity savedDeliveryAddress = deliveryAddressJpaRepository.save(deliveryAddressEntity);
             PurchaseEntity purchaseEntity = purchaseMapper.mapToEntity(purchase);
             purchaseEntity.setDeliveryAddress(savedDeliveryAddress);
-            PurchaseEntity saved = purchaseJpaRepository.save(purchaseEntity);
+            PurchaseEntity saved = purchaseJpaRepository.saveAndFlush(purchaseEntity);
 
-            Set<FoodPurchaseEntity> foodPurchases = saved.getFoodPurchases();
-            List<FoodPurchaseEntity> list = foodPurchases.stream()
-                    .map(e -> e.withPurchase(saved)).toList();
+//            Set<FoodPurchaseEntity> foodPurchases = saved.getFoodPurchases();
+//            List<FoodPurchaseEntity> list = foodPurchases.stream()
+//                    .map(e -> e.withPurchase(saved)).toList();
+//
+//            list.stream().map(foodPurchaseJpaRepository::saveAndFlush);
 
-            list.stream().map(foodPurchaseJpaRepository::saveAndFlush);
+            purchase.getFoodPurchases().stream()
+                    .map(foodPurchaseMapper::mapToEntity)
+                    .forEach(entity->{
+                        entity.setPurchase(saved);
+                        foodPurchaseJpaRepository.saveAndFlush(entity);
+                    });
 
             return purchaseMapper.mapFromEntity(saved);
         }
