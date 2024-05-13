@@ -2,7 +2,6 @@ package com.lukasz.yumnow.database.repository;
 
 import com.lukasz.yumnow.buisness.dao.PurchaseDao;
 import com.lukasz.yumnow.database.entity.DeliveryAddressEntity;
-import com.lukasz.yumnow.database.entity.FoodPurchaseEntity;
 import com.lukasz.yumnow.database.entity.PurchaseEntity;
 import com.lukasz.yumnow.database.jpa.DeliveryAddressJpaRepository;
 import com.lukasz.yumnow.database.jpa.FoodPurchaseJpaRepository;
@@ -11,16 +10,11 @@ import com.lukasz.yumnow.database.jpa.mapper.DeliveryAddressMapper;
 import com.lukasz.yumnow.database.jpa.mapper.FoodPurchaseMapper;
 import com.lukasz.yumnow.database.jpa.mapper.PurchaseMapper;
 import com.lukasz.yumnow.domain.DeliveryAddress;
-import com.lukasz.yumnow.domain.FoodPurchase;
 import com.lukasz.yumnow.domain.Purchase;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
@@ -87,5 +81,27 @@ public class PurchaseRepository implements PurchaseDao {
             return purchaseMapper.mapFromEntity(saved);
         }
 
+    }
+
+    @Override
+    public Optional<Purchase> findByPurchaseNumber(String purchaseNumber) {
+
+        Optional<PurchaseEntity> optionalPurchase = purchaseJpaRepository.findByPurchaseNumber(purchaseNumber);
+
+        if(optionalPurchase.isPresent()){
+            PurchaseEntity purchaseEntity = optionalPurchase.get();
+            Purchase purchase = purchaseMapper.mapFromEntity(purchaseEntity);
+            return Optional.of(purchase);
+        }
+        else{
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public void cancelPurchase(Purchase purchase) {
+        PurchaseEntity purchaseEntity = purchaseJpaRepository.findByPurchaseNumber(purchase.getPurchaseNumber()).orElseThrow();
+        purchaseEntity.setStatus("CANCELED");
+        purchaseJpaRepository.save(purchaseEntity);
     }
 }

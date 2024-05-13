@@ -6,9 +6,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -38,7 +40,7 @@ public class PurchaseService {
         return createPurchase(newCustomer, local, foods, deliveryAddress);
     }
 
-    public Purchase createPurchase(Customer customer, Local local, List<FoodPurchase> foods, DeliveryAddress deliveryAddress){
+    public Purchase createPurchase(Customer customer, Local local, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
 
         List<FoodPurchase> updatedFoods = foods.stream()
                 .map(food -> food.withTotalPrice(BigDecimal.valueOf(food.getQuantity()).multiply(food.getFood().getPrice())))
@@ -70,6 +72,26 @@ public class PurchaseService {
 
             return purchaseDao.create(purchaseToSave);
 
+        }
+
+    }
+
+    public void cancelPurchase(String purchaseNumber) {
+
+        Optional<Purchase> optionalPurchase = purchaseDao.findByPurchaseNumber(purchaseNumber);
+
+        if (optionalPurchase.isEmpty()) {
+            throw new RuntimeException("Cannot cancel purchase [%s]. Purchase with this purchase number does not exist."
+                    .formatted(purchaseNumber));
+        } else {
+            Purchase purchase = optionalPurchase.get();
+            Duration between = Duration.between(purchase.getTime(),OffsetDateTime.now());
+            long minutes = between.toMinutes();
+            if(minutes>1){
+                throw new RuntimeException("Cannot cancel purchase with purchase number: [%s], cannot cancel purchase that was done more then 20 minutes ago"
+                        .formatted(purchaseNumber));
+            }
+            purchaseDao.cancelPurchase(purchase);
         }
 
     }
