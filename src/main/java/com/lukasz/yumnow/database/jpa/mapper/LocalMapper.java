@@ -1,8 +1,10 @@
 package com.lukasz.yumnow.database.jpa.mapper;
 
+import com.lukasz.yumnow.database.entity.FoodEntity;
 import com.lukasz.yumnow.database.entity.LocalDeliveryAddressEntity;
 import com.lukasz.yumnow.database.entity.LocalEntity;
 import com.lukasz.yumnow.database.entity.PurchaseEntity;
+import com.lukasz.yumnow.domain.Food;
 import com.lukasz.yumnow.domain.Local;
 import com.lukasz.yumnow.domain.LocalDeliveryAddress;
 import com.lukasz.yumnow.domain.Purchase;
@@ -19,11 +21,21 @@ public interface LocalMapper {
 
     @Mapping(target = "owner", ignore = true)
     @Mapping(target = "opinions", ignore = true)
-    @Mapping(target = "foods", ignore = true)
+    @Mapping(source= "foods",target = "foods", qualifiedByName = "mapFood")
 //    @Mapping(target = "purchases", ignore = true)
     @Mapping(source = "purchases", target = "purchases", qualifiedByName = "mapPurchase")
     @Mapping(source = "localDeliveryAddresses", target = "localDeliveryAddresses", qualifiedByName = "mapDeliveryAddress")
     Local mapFromEntity(LocalEntity entity);
+
+
+    @Named("mapFood")
+    default Set<Food> mapFood(Set<FoodEntity> entities){
+        return entities.stream().map(this::mapFoodFromEntity).collect(Collectors.toSet());
+    }
+
+    @Mapping(target = "local", ignore = true)
+    @Mapping(target = "foodPurchases", ignore = true)
+    Food mapFoodFromEntity(FoodEntity food);
 
     @Named("mapDeliveryAddress")
     default Set<LocalDeliveryAddress> mapLocalDeliveryAddress(Set<LocalDeliveryAddressEntity> entities) {
