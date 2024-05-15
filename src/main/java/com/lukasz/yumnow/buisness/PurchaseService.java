@@ -2,6 +2,7 @@ package com.lukasz.yumnow.buisness;
 
 import com.lukasz.yumnow.buisness.dao.PurchaseDao;
 import com.lukasz.yumnow.domain.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +21,13 @@ public class PurchaseService {
     private final PurchaseDao purchaseDao;
     private final LocalService localService;
     private final CustomerService customerService;
-    private final FoodService foodService;
-
 
     public Purchase createPurchaseWithAccount(String email, String localName, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
+
         Local local = localService.findByName(localName);
         Customer customer = customerService.findByEmail(email);
 
-
         return createPurchase(customer, local, foods, deliveryAddress);
-
     }
 
     public Purchase createPurchaseWithNoAccount(Customer customer, String localName, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
@@ -38,34 +36,28 @@ public class PurchaseService {
         Customer newCustomer = customerService.create(customer);
 
         return createPurchase(newCustomer, local, foods, deliveryAddress);
+
     }
 
-    public Purchase createPurchase(Customer customer, Local local, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
+    public Purchase createPurchase(@NotNull Customer customer, Local local, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
 
-        List<FoodPurchase> updatedFoods = foods.stream()
-                .map(food -> food.withTotalPrice(BigDecimal.valueOf(food.getQuantity()).multiply(food.getFood().getPrice())))
-                .toList();
+        List<FoodPurchase> updatedFoods = foods.stream().map(food -> food.withTotalPrice(BigDecimal.valueOf(food.getQuantity()).multiply(food.getFood().getPrice()))).toList();
 
         BigDecimal purchaseTotalPrice = updatedFoods.stream().reduce(BigDecimal.ZERO, (left, right) -> left.add(right.getTotalPrice()), BigDecimal::add);
 
         DeliveryAddress updatedDeliveryAddress = deliveryAddress.withCode(generateDeliveryAddressCode(deliveryAddress));
 
-        if (!local.getLocalDeliveryAddresses().contains(LocalDeliveryAddress.builder()
-                .code(updatedDeliveryAddress.getCode())
-                .build())) {
-            throw new RuntimeException("This address is not supported by this local [%s]"
-                    .formatted(updatedDeliveryAddress.getCode()));
+        if (!local.getLocalDeliveryAddresses().contains(LocalDeliveryAddress.builder().code(updatedDeliveryAddress.getCode()).build())) {
+            throw new RuntimeException("This address is not supported by this local [%s]".formatted(updatedDeliveryAddress.getCode()));
         } else {
 
             Purchase purchaseToSave = Purchase.builder()
                     .purchaseNumber(generatePurchaseNumber())
                     .totalPrice(purchaseTotalPrice)
                     .time(OffsetDateTime.now())
-                    .status("CREATED")
-                    .local(local)
+                    .status("CREATED").local(local)
                     .deliveryAddress(updatedDeliveryAddress)
-                    .confirmation(null)
-                    .customer(customer)
+                    .confirmation(null).customer(customer)
                     .foodPurchases(new HashSet<>(updatedFoods))
                     .build();
 
@@ -73,7 +65,6 @@ public class PurchaseService {
             return purchaseDao.create(purchaseToSave);
 
         }
-
     }
 
     public void cancelPurchase(String purchaseNumber) {
@@ -85,9 +76,9 @@ public class PurchaseService {
                     .formatted(purchaseNumber));
         } else {
             Purchase purchase = optionalPurchase.get();
-            Duration between = Duration.between(purchase.getTime(),OffsetDateTime.now());
+            Duration between = Duration.between(purchase.getTime(), OffsetDateTime.now());
             long minutes = between.toMinutes();
-            if(minutes>1){
+            if (minutes > 1) {
                 throw new RuntimeException("Cannot cancel purchase with purchase number: [%s], cannot cancel purchase that was done more then 20 minutes ago"
                         .formatted(purchaseNumber));
             }
@@ -102,9 +93,6 @@ public class PurchaseService {
     }
 
     private String generateDeliveryAddressCode(DeliveryAddress deliveryAddress) {
-        return
-                deliveryAddress.getCountry() + '/' +
-                        deliveryAddress.getCity() + '/' +
-                        deliveryAddress.getStreet();
+        return deliveryAddress.getCountry() + '/' + deliveryAddress.getCity() + '/' + deliveryAddress.getStreet();
     }
 }
