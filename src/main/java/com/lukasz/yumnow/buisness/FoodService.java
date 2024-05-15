@@ -25,8 +25,8 @@ public class FoodService {
         }
     }
 
-    public Food create(String name, Food food) {
-        Local local = localService.findByName(name);
+    public Food create(String localName, Food food) {
+        Local local = localService.findByName(localName);
 
         Optional<Food> optionalFood = foodDao.findByCode(food.getCode());
 
@@ -36,7 +36,7 @@ public class FoodService {
         } else {
 
             Food foodToSave = Food.builder()
-                    .code(generateCode(name, food))
+                    .code(generateCode(localName, food))
                     .name(food.getName())
                     .category(food.getCategory())
                     .description(food.getDescription())
@@ -46,7 +46,7 @@ public class FoodService {
                     .foodPurchases(new HashSet<>())
                     .build();
 
-            return foodDao.create(name, foodToSave);
+            return foodDao.create(localName, foodToSave);
         }
 
     }

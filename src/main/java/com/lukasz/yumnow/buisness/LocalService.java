@@ -47,7 +47,6 @@ public class LocalService {
 
             return localDao.create(localToSave);
 
-
         }
     }
 }

@@ -30,7 +30,6 @@ class CustomerServiceTest {
     @Test
     void shouldSaveCustomerThatDoesntExistCorrectly() {
 
-        //given
         Customer nonExistingCustomer = Customer.builder()
                 .name("Peter")
                 .surname("Example")
@@ -43,10 +42,8 @@ class CustomerServiceTest {
         when(customerDao.findByEmail(nonExistingCustomer.getEmail())).thenReturn(Optional.empty());
         when(customerDao.create(nonExistingCustomer)).thenReturn(nonExistingCustomer);
 
-        //when
         Customer createdCustomer = customerService.create(nonExistingCustomer);
 
-        //then
         assertEquals(nonExistingCustomer, createdCustomer);
         verify(customerDao, times(1)).findByEmail(nonExistingCustomer.getEmail());
         verify(customerDao, times(1)).create(nonExistingCustomer);
@@ -55,7 +52,6 @@ class CustomerServiceTest {
     @Test
     void shouldFailWhenSavingExistingCustomer() {
 
-        //given
         Customer existingCustomer = Customer.builder()
                 .name("Peter")
                 .surname("Example")
@@ -67,9 +63,44 @@ class CustomerServiceTest {
 
         when(customerDao.findByEmail(existingCustomer.getEmail())).thenReturn(Optional.of(existingCustomer));
 
-        //when, then
         assertThrows(RuntimeException.class, () -> customerService.create(existingCustomer));
         verify(customerDao, never()).create(existingCustomer);
+    }
+
+    @Test
+    void shouldFindCustomerByEmailCorrectly() {
+
+        String email = "john.doe@example.com";
+        Customer customer = Customer.builder()
+                .name("John")
+                .surname("Doe")
+                .email(email)
+                .address("123 Main Street")
+                .build();
+
+        when(customerDao.findByEmail(email)).thenReturn(Optional.of(customer));
+
+        Customer foundCustomer = customerService.findByEmail(email);
+
+        verify(customerDao, times(1)).findByEmail(email);
+
+        assertEquals(customer, foundCustomer);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCustomerNotFoundByEmail() {
+
+        String email = "john.doe@example.com";
+
+        when(customerDao.findByEmail(email)).thenReturn(Optional.empty());
+
+        assertThrows(
+                RuntimeException.class,
+                () -> customerService.findByEmail(email),
+                "Cannot find customer with email: [%s]".formatted(email)
+        );
+
+        verify(customerDao, times(1)).findByEmail(email);
     }
 
 }
