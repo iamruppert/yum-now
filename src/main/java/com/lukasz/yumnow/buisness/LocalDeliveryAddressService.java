@@ -43,17 +43,10 @@ public class LocalDeliveryAddressService {
 
     }
 
-
     private String generateDeliveryAddressCode(LocalDeliveryAddress deliveryAddress) {
         return
                 deliveryAddress.getCountry()+'/'+
                 deliveryAddress.getCity()+'/'+
                 deliveryAddress.getStreet();
-    }
-
-    private HashSet<Local> buildLocals(Local local, LocalDeliveryAddress deliveryAddress){
-        Set<Local> locals = deliveryAddress.getLocals();
-        locals.add(local);
-        return new HashSet<>(locals);
     }
 }
