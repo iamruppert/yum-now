@@ -4,6 +4,7 @@ import com.lukasz.yumnow.buisness.OwnerService;
 import com.lukasz.yumnow.buisness.dao.OwnerDao;
 import com.lukasz.yumnow.domain.Owner;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,6 +27,35 @@ class OwnerServiceTest {
 
     @InjectMocks
     private OwnerService ownerService;
+
+
+    @Test
+    void thisTestShouldFindExistingCustomerCorrectly() {
+
+        String email = "peter@gmail.com";
+        Owner owner = Owner.builder()
+                .email(email)
+                .build();
+
+        when(ownerDao.findByEmail(email)).thenReturn(Optional.of(owner));
+
+        Owner result = ownerService.findByEmail(email);
+
+        Assertions.assertEquals(owner, result);
+
+    }
+
+    @Test
+    void thisTestShouldFailWhileFindingNonExistingCustomer() {
+
+        String email = "peter@gmail.com";
+        Owner owner = Owner.builder()
+                .email(email)
+                .build();
+
+        when(ownerDao.findByEmail(email)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> ownerService.findByEmail(email));
+    }
 
     @Test
     void shouldSaveOwnerThatDoesntExistCorrectly() {
