@@ -10,5 +10,7 @@ public interface FoodDao {
 
     Optional<Food> findByCode(String code);
 
+    Optional<Food> findById(Integer id);
+
     Food create(String name, Food food);
 }
