@@ -26,6 +26,15 @@ public class LocalService {
         }
     }
 
+    public Local findById(Integer id) {
+        Optional<Local> optionalLocal = localDao.findById(id);
+        if (optionalLocal.isPresent()) {
+            return optionalLocal.get();
+        } else {
+            throw new RuntimeException("Cannot find local with id: [%s]".formatted(id));
+        }
+    }
+
     public Local create(String email, Local local) {
         Optional<Local> optionalLocal = localDao.findByName(local.getName());
         Owner owner = ownerService.findByEmail(email);

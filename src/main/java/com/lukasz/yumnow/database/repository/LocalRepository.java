@@ -22,9 +22,24 @@ public class LocalRepository implements LocalDao {
     private final LocalMapper localMapper;
     private final OwnerMapper ownerMapper;
 
+
+
     @Override
     public Optional<Local> findByName(String name) {
         Optional<LocalEntity> optionalLocal = localJpaRepository.findByName(name);
+        if(optionalLocal.isPresent()){
+            LocalEntity localEntity = optionalLocal.get();
+            Local local = localMapper.mapFromEntity(localEntity);
+            return Optional.of(local);
+        }
+        else{
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<Local> findById(Integer id) {
+        Optional<LocalEntity> optionalLocal = localJpaRepository.findById(id);
         if(optionalLocal.isPresent()){
             LocalEntity localEntity = optionalLocal.get();
             Local local = localMapper.mapFromEntity(localEntity);

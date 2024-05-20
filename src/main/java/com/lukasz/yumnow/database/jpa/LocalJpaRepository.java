@@ -22,4 +22,19 @@ public interface LocalJpaRepository extends JpaRepository<LocalEntity, Integer> 
             }
     )
     Optional<LocalEntity> findByName(String name);
+
+
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {
+                    "owner",
+                    "opinions",
+                    "foods",
+                    "purchases",
+                    "localDeliveryAddresses",
+                    "localDeliveryAddresses.locals",
+            }
+    )
+    Optional<LocalEntity> findById(Integer id);
+
 }

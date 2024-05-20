@@ -11,5 +11,7 @@ public interface LocalDao {
 
     Optional<Local> findByName(String name);
 
+    Optional<Local> findById(Integer id);
+
     Local create(Local local);
 }
