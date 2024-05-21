@@ -26,6 +26,12 @@ public class PurchaseServiceTest {
     @Mock
     private PurchaseDao purchaseDao;
 
+    @Mock
+    private LocalService localService;
+
+    @Mock
+    private CustomerService customerService;
+
     @InjectMocks
     private PurchaseService purchaseService;
 
@@ -33,7 +39,8 @@ public class PurchaseServiceTest {
     @Test
     void testCreatePurchase() {
 
-        Customer customer = Customer.builder().email("test@example.com").build();
+        String email = "test@example.com";
+        Customer customer = Customer.builder().email(email).build();
         Local local = Local.builder().name("Test Local").localDeliveryAddresses(Set.of(
                 LocalDeliveryAddress.builder().code("USA/New York/Main St").build()
         )).build();
@@ -43,20 +50,22 @@ public class PurchaseServiceTest {
         );
         DeliveryAddress deliveryAddress = DeliveryAddress.builder().country("USA").city("New York").street("Main St").build();
 
+        when(localService.findByName("Test Local")).thenReturn(local);
+        when(customerService.findByEmail(email)).thenReturn(customer);
 
         Purchase expected = Purchase.builder()
                 .purchaseNumber(UUID.randomUUID().toString())
                 .totalPrice(BigDecimal.valueOf(35))
                 .time(OffsetDateTime.now())
                 .status("CREATED").local(local)
-                .deliveryAddress(deliveryAddress)
+                .deliveryAddress(deliveryAddress.withCode("USA/New York/Main St"))
                 .confirmation(null).customer(customer)
                 .foodPurchases(new HashSet<>(foods))
                 .build();
 
         when(purchaseDao.create(any(Purchase.class))).thenReturn(expected);
 
-        Purchase result = purchaseService.createPurchase(customer, local, foods, deliveryAddress);
+        Purchase result = purchaseService.createPurchase(email, customer, "Test Local", foods, deliveryAddress);
 
         assertNotNull(result);
         assertEquals(expected.getCustomer(), result.getCustomer());
@@ -72,7 +81,8 @@ public class PurchaseServiceTest {
     @Test
     void testCreatePurchase_InvalidDeliveryAddress() {
 
-        Customer customer = Customer.builder().email("test@example.com").build();
+        String email = "test@example.com";
+        Customer customer = Customer.builder().email(email).build();
         Local local = Local.builder().name("Test Local").localDeliveryAddresses(Set.of(
                 LocalDeliveryAddress.builder().code("USA/New York/Main St").build()
         )).build();
@@ -82,7 +92,10 @@ public class PurchaseServiceTest {
         );
         DeliveryAddress deliveryAddress = DeliveryAddress.builder().country("USA").city("Los Angeles").street("Main St").build();
 
-        assertThrows(RuntimeException.class, () -> purchaseService.createPurchase(customer, local, foods, deliveryAddress));
+        when(localService.findByName("Test Local")).thenReturn(local);
+        when(customerService.findByEmail(email)).thenReturn(customer);
+
+        assertThrows(RuntimeException.class, () -> purchaseService.createPurchase(email, customer, "Test Local", foods, deliveryAddress));
     }
 
     @Test

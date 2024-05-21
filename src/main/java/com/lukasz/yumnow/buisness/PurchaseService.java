@@ -22,24 +22,18 @@ public class PurchaseService {
     private final LocalService localService;
     private final CustomerService customerService;
 
-    public Purchase createPurchaseWithAccount(String email, String localName, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
+
+    public Purchase createPurchase(String email, Customer customer, String localName, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
+
+        Customer foundCustomer;
+
+        if (email.isEmpty()) {
+            foundCustomer = customerService.create(customer);
+        } else {
+           foundCustomer = customerService.findByEmail(email);
+        }
 
         Local local = localService.findByName(localName);
-        Customer customer = customerService.findByEmail(email);
-
-        return createPurchase(customer, local, foods, deliveryAddress);
-    }
-
-    public Purchase createPurchaseWithNoAccount(Customer customer, String localName, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
-
-        Local local = localService.findByName(localName);
-        Customer newCustomer = customerService.create(customer);
-
-        return createPurchase(newCustomer, local, foods, deliveryAddress);
-
-    }
-
-    public Purchase createPurchase(@NotNull Customer customer, Local local, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
 
         List<FoodPurchase> updatedFoods = foods.stream().map(food -> food.withTotalPrice(BigDecimal.valueOf(food.getQuantity()).multiply(food.getFood().getPrice()))).toList();
 
@@ -57,7 +51,7 @@ public class PurchaseService {
                     .time(OffsetDateTime.now())
                     .status("CREATED").local(local)
                     .deliveryAddress(updatedDeliveryAddress)
-                    .confirmation(null).customer(customer)
+                    .confirmation(null).customer(foundCustomer)
                     .foodPurchases(new HashSet<>(updatedFoods))
                     .build();
 

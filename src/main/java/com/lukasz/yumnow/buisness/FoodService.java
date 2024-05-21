@@ -25,6 +25,15 @@ public class FoodService {
         }
     }
 
+    public Food findById(Integer id) {
+        Optional<Food> optionalFood = foodDao.findById(id);
+        if (optionalFood.isPresent()) {
+            return optionalFood.get();
+        } else {
+            throw new RuntimeException("Cannot find food with id: [%s]".formatted(id));
+        }
+    }
+
     public Food create(String localName, Food food) {
         Local local = localService.findByName(localName);
 

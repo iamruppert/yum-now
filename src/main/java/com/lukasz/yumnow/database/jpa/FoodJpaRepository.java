@@ -16,4 +16,14 @@ public interface FoodJpaRepository extends JpaRepository<FoodEntity, Integer> {
             }
     )
     Optional<FoodEntity> findByCode(String code);
+
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {
+                    "local",
+                    "foodPurchases"
+            }
+    )
+    Optional<FoodEntity> findById(Integer id);
+
 }

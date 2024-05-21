@@ -32,6 +32,17 @@ public class FoodRepository implements FoodDao {
     }
 
     @Override
+    public Optional<Food> findById(Integer id) {
+        Optional<FoodEntity> optionalFood = foodJpaRepository.findById(id);
+        if(optionalFood.isPresent()){
+            FoodEntity foodEntity = optionalFood.get();
+            Food food = foodMapper.mapFromEntity(foodEntity);
+            return Optional.of(food);
+        }
+        else return Optional.empty();
+    }
+
+    @Override
     public Food create(String name, Food food) {
 
         LocalEntity localEntity = localJpaRepository.findByName(name).orElseThrow();
