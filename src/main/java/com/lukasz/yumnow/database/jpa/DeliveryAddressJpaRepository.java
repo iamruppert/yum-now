@@ -1,7 +1,6 @@
 package com.lukasz.yumnow.database.jpa;
 
 import com.lukasz.yumnow.database.entity.DeliveryAddressEntity;
-import com.lukasz.yumnow.domain.DeliveryAddress;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
