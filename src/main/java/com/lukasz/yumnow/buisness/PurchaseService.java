@@ -2,7 +2,6 @@ package com.lukasz.yumnow.buisness;
 
 import com.lukasz.yumnow.buisness.dao.PurchaseDao;
 import com.lukasz.yumnow.domain.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +21,14 @@ public class PurchaseService {
     private final LocalService localService;
     private final CustomerService customerService;
 
+    public Purchase findById(Integer id){
+
+        Optional<Purchase> optionalPurchase = purchaseDao.findById(id);
+        if (optionalPurchase.isPresent()) {
+            return optionalPurchase.get();
+        } else throw new RuntimeException("Cannot find purchase with id: [%s]".formatted(id));
+
+    }
 
     public Purchase createPurchase(String email, Customer customer, String localName, List<FoodPurchase> foods, DeliveryAddress deliveryAddress) {
 

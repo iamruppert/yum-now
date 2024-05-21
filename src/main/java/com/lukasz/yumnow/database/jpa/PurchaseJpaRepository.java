@@ -21,4 +21,16 @@ public interface PurchaseJpaRepository extends JpaRepository<PurchaseEntity, Int
             }
     )
     Optional<PurchaseEntity> findByPurchaseNumber(String purchaseNumber);
+
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {
+                    "local",
+                    "deliveryAddress",
+                    "confirmation",
+                    "customer",
+                    "foodPurchases",
+            }
+    )
+    Optional<PurchaseEntity> findById(Integer id);
 }

@@ -84,6 +84,20 @@ public class PurchaseRepository implements PurchaseDao {
     }
 
     @Override
+    public Optional<Purchase> findById(Integer id) {
+        Optional<PurchaseEntity> optionalPurchase = purchaseJpaRepository.findById(id);
+
+        if(optionalPurchase.isPresent()){
+            PurchaseEntity purchaseEntity = optionalPurchase.get();
+            Purchase purchase = purchaseMapper.mapFromEntity(purchaseEntity);
+            return Optional.of(purchase);
+        }
+        else{
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<Purchase> findByPurchaseNumber(String purchaseNumber) {
 
         Optional<PurchaseEntity> optionalPurchase = purchaseJpaRepository.findByPurchaseNumber(purchaseNumber);

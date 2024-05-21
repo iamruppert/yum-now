@@ -10,6 +10,8 @@ public interface PurchaseDao {
 
     Purchase create(Purchase purchase);
 
+    Optional<Purchase> findById(Integer id);
+
     Optional<Purchase> findByPurchaseNumber(String purchaseNumber);
 
     void cancelPurchase(Purchase purchase);

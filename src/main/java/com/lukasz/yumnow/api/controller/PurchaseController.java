@@ -5,6 +5,7 @@ import com.lukasz.yumnow.api.dto.mapper.FoodPurchaseDtoMapper;
 import com.lukasz.yumnow.buisness.LocalService;
 import com.lukasz.yumnow.buisness.PurchaseService;
 import com.lukasz.yumnow.domain.FoodPurchase;
+import com.lukasz.yumnow.domain.Purchase;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +47,20 @@ public class PurchaseController {
         }
     }
 
+    @PostMapping("/customer/purchases/{purchaseId}/cancel")
+    public ResponseEntity<?> cancelPurchase(
+            @PathVariable int purchaseId
+    ) {
+
+        try {
+
+            Purchase purchase = purchaseService.findById(purchaseId);
+            purchaseService.cancelPurchase(purchase.getPurchaseNumber());
+            return ResponseEntity.ok().body("Purchase canceled successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
 
 }
