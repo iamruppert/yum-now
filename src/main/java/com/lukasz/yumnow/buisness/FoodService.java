@@ -3,6 +3,8 @@ package com.lukasz.yumnow.buisness;
 import com.lukasz.yumnow.buisness.dao.FoodDao;
 import com.lukasz.yumnow.domain.Food;
 import com.lukasz.yumnow.domain.Local;
+import com.lukasz.yumnow.domain.exception.AlreadyExistsException;
+import com.lukasz.yumnow.domain.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,7 @@ public class FoodService {
         if (optionalFood.isPresent()) {
             return optionalFood.get();
         } else {
-            throw new RuntimeException("Cannot find food with code: [%s]".formatted(code));
+            throw new NotFoundException("Cannot find food with code: [%s]".formatted(code));
         }
     }
 
@@ -30,7 +32,7 @@ public class FoodService {
         if (optionalFood.isPresent()) {
             return optionalFood.get();
         } else {
-            throw new RuntimeException("Cannot find food with id: [%s]".formatted(id));
+            throw new NotFoundException("Cannot find food with id: [%s]".formatted(id));
         }
     }
 
@@ -40,7 +42,7 @@ public class FoodService {
         Optional<Food> optionalFood = foodDao.findByCode(food.getCode());
 
         if (optionalFood.isPresent()) {
-            throw new RuntimeException("Food with code: [%s] is already defined in this local"
+            throw new AlreadyExistsException("Food with code: [%s] is already defined in this local"
                     .formatted(food.getCode()));
         } else {
 

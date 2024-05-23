@@ -3,6 +3,7 @@ package com.lukasz.yumnow.buisness;
 import com.lukasz.yumnow.buisness.dao.LocalDeliveryAddressDao;
 import com.lukasz.yumnow.domain.Local;
 import com.lukasz.yumnow.domain.LocalDeliveryAddress;
+import com.lukasz.yumnow.domain.exception.AlreadyExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class LocalDeliveryAddressService {
             return localDeliveryAddressDao.create(local,deliveryAddressToSave);
         }
         else{
-            throw new RuntimeException("This delivery address code [%s] is already in the local's delivery addresses list".formatted(
+            throw new AlreadyExistsException("This delivery address code [%s] is already in the local's delivery addresses list".formatted(
                     deliveryAddressToSave.getCode()
             ));
         }

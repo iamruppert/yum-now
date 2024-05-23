@@ -2,6 +2,8 @@ package com.lukasz.yumnow.buisness;
 
 import com.lukasz.yumnow.buisness.dao.CustomerDao;
 import com.lukasz.yumnow.domain.Customer;
+import com.lukasz.yumnow.domain.exception.AlreadyExistsException;
+import com.lukasz.yumnow.domain.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,7 @@ public class CustomerService {
         Optional<Customer> optionalCustomer = customerDao.findByEmail(email);
         if (optionalCustomer.isPresent()) {
             return optionalCustomer.get();
-        } else throw new RuntimeException("Cannot find customer with email: [%s]".formatted(email));
+        } else throw new NotFoundException("Cannot find customer with email: [%s]".formatted(email));
     }
 
     @Transactional
@@ -27,7 +29,7 @@ public class CustomerService {
         Optional<Customer> customerOptional = customerDao.findByEmail(customer.getEmail());
 
         if (customerOptional.isPresent()) {
-            throw new RuntimeException("Customer with email: [%s] already exists.".formatted(customer.getEmail()));
+            throw new AlreadyExistsException("Customer with email: [%s] already exists.".formatted(customer.getEmail()));
         } else {
             return customerDao.create(customer);
         }

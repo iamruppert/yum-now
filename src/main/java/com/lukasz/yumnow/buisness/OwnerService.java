@@ -2,6 +2,8 @@ package com.lukasz.yumnow.buisness;
 
 import com.lukasz.yumnow.buisness.dao.OwnerDao;
 import com.lukasz.yumnow.domain.Owner;
+import com.lukasz.yumnow.domain.exception.AlreadyExistsException;
+import com.lukasz.yumnow.domain.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,7 @@ public class OwnerService {
             return optionalOwner.get();
         }
         else {
-            throw new RuntimeException("Cannot find owner with email: [%s]".formatted(email));
+            throw new NotFoundException("Cannot find owner with email: [%s]".formatted(email));
         }
     }
 
@@ -29,7 +31,7 @@ public class OwnerService {
         Optional<Owner> optionalOwner = ownerDao.findByEmail(owner.getEmail());
 
         if(optionalOwner.isPresent()){
-            throw new RuntimeException("Owner with email: [%s] already exists.".formatted(owner.getEmail()));
+            throw new AlreadyExistsException("Owner with email: [%s] already exists.".formatted(owner.getEmail()));
         }
         else {
             return ownerDao.create(owner);

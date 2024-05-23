@@ -2,6 +2,7 @@ package com.lukasz.yumnow.buisness;
 
 import com.lukasz.yumnow.buisness.dao.PurchaseDao;
 import com.lukasz.yumnow.domain.*;
+import com.lukasz.yumnow.domain.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class PurchaseService {
         Optional<Purchase> optionalPurchase = purchaseDao.findById(id);
         if (optionalPurchase.isPresent()) {
             return optionalPurchase.get();
-        } else throw new RuntimeException("Cannot find purchase with id: [%s]".formatted(id));
+        } else throw new NotFoundException("Cannot find purchase with id: [%s]".formatted(id));
 
     }
 
@@ -73,7 +74,7 @@ public class PurchaseService {
         Optional<Purchase> optionalPurchase = purchaseDao.findByPurchaseNumber(purchaseNumber);
 
         if (optionalPurchase.isEmpty()) {
-            throw new RuntimeException("Cannot cancel purchase [%s]. Purchase with this purchase number does not exist."
+            throw new NotFoundException("Cannot cancel purchase [%s]. Purchase with this purchase number does not exist."
                     .formatted(purchaseNumber));
         } else {
             Purchase purchase = optionalPurchase.get();

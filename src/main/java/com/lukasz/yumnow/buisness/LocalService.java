@@ -3,6 +3,8 @@ package com.lukasz.yumnow.buisness;
 import com.lukasz.yumnow.buisness.dao.LocalDao;
 import com.lukasz.yumnow.domain.Local;
 import com.lukasz.yumnow.domain.Owner;
+import com.lukasz.yumnow.domain.exception.AlreadyExistsException;
+import com.lukasz.yumnow.domain.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +26,7 @@ public class LocalService {
         if (optionalLocal.isPresent()) {
             return optionalLocal.get();
         } else {
-            throw new RuntimeException("Cannot find local with name: [%s]".formatted(name));
+            throw new NotFoundException("Cannot find local with name: [%s]".formatted(name));
         }
     }
 
@@ -33,7 +35,7 @@ public class LocalService {
         if (optionalLocal.isPresent()) {
             return optionalLocal.get();
         } else {
-            throw new RuntimeException("Cannot find local with id: [%s]".formatted(id));
+            throw new NotFoundException("Cannot find local with id: [%s]".formatted(id));
         }
     }
 
@@ -42,7 +44,7 @@ public class LocalService {
         Owner owner = ownerService.findByEmail(email);
 
         if (optionalLocal.isPresent()) {
-            throw new RuntimeException("Local with name [%s] already exists.".formatted(local.getName()));
+            throw new AlreadyExistsException("Local with name [%s] already exists.".formatted(local.getName()));
         } else {
 
             Local localToSave = Local.builder()
