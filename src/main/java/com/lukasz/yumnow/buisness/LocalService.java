@@ -4,6 +4,8 @@ import com.lukasz.yumnow.buisness.dao.LocalDao;
 import com.lukasz.yumnow.domain.Local;
 import com.lukasz.yumnow.domain.Owner;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -57,5 +59,9 @@ public class LocalService {
             return localDao.create(localToSave);
 
         }
+    }
+
+    public Page<Local> findAll(Pageable pageable) {
+        return localDao.findAll(pageable);
     }
 }

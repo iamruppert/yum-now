@@ -1,13 +1,7 @@
 package com.lukasz.yumnow.database.jpa.mapper;
 
-import com.lukasz.yumnow.database.entity.FoodEntity;
-import com.lukasz.yumnow.database.entity.LocalDeliveryAddressEntity;
-import com.lukasz.yumnow.database.entity.LocalEntity;
-import com.lukasz.yumnow.database.entity.PurchaseEntity;
-import com.lukasz.yumnow.domain.Food;
-import com.lukasz.yumnow.domain.Local;
-import com.lukasz.yumnow.domain.LocalDeliveryAddress;
-import com.lukasz.yumnow.domain.Purchase;
+import com.lukasz.yumnow.database.entity.*;
+import com.lukasz.yumnow.domain.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -19,14 +13,35 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LocalMapper {
 
-    @Mapping(target = "owner", ignore = true)
-    @Mapping(target = "opinions", ignore = true)
+    @Mapping(target = "owner", qualifiedByName = "mapOwner")
+    @Mapping(target = "opinions", qualifiedByName = "mapOpinions")
     @Mapping(source= "foods",target = "foods", qualifiedByName = "mapFood")
-//    @Mapping(target = "purchases", ignore = true)
     @Mapping(source = "purchases", target = "purchases", qualifiedByName = "mapPurchase")
     @Mapping(source = "localDeliveryAddresses", target = "localDeliveryAddresses", qualifiedByName = "mapDeliveryAddress")
     Local mapFromEntity(LocalEntity entity);
 
+
+    @Named("mapOwner")
+    default Owner mapOwner(OwnerEntity entity){
+        if (entity == null) {
+            return null;
+        }
+        return Owner.builder()
+                .ownerId((entity.getOwnerId()))
+                .name((entity.getName()))
+                .surname((entity.getSurname()))
+                .email((entity.getEmail()))
+                .address((entity.getAddress()))
+                .build();
+    }
+
+    @Named("mapOpinions")
+    default Set<Opinion> mapOpinion(Set<OpinionEntity> entities){
+        return entities.stream().map(this::mapOpinionFromEntity).collect(Collectors.toSet());
+    }
+
+    @Mapping(target = "local", ignore = true)
+    Opinion mapOpinionFromEntity(OpinionEntity opinionEntity);
 
     @Named("mapFood")
     default Set<Food> mapFood(Set<FoodEntity> entities){

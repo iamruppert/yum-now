@@ -9,6 +9,8 @@ import com.lukasz.yumnow.database.jpa.mapper.LocalMapper;
 import com.lukasz.yumnow.database.jpa.mapper.OwnerMapper;
 import com.lukasz.yumnow.domain.Local;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -57,5 +59,11 @@ public class LocalRepository implements LocalDao {
         localEntity.setOwner(ownerEntity);
         LocalEntity saved = localJpaRepository.save(localEntity);
         return localMapper.mapFromEntity(saved);
+    }
+
+    @Override
+    public Page<Local> findAll(Pageable pageable) {
+        Page<LocalEntity> localEntities = localJpaRepository.findAll(pageable);
+        return localEntities.map(localMapper::mapFromEntity);
     }
 }
