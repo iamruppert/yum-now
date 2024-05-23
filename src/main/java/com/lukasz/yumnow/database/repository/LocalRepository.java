@@ -66,4 +66,10 @@ public class LocalRepository implements LocalDao {
         Page<LocalEntity> localEntities = localJpaRepository.findAll(pageable);
         return localEntities.map(localMapper::mapFromEntity);
     }
+
+    @Override
+    public Page<Local> findAllByDeliveryAddressStreet(String street, Pageable pageable) {
+        Page<LocalEntity> localEntities = localJpaRepository.findAllByLocalDeliveryAddressesStreet(street, pageable);
+        return localEntities.map(localMapper::mapFromEntity);
+    }
 }

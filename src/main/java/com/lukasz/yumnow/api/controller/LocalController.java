@@ -31,6 +31,20 @@ public class LocalController {
     private LocalService localService;
     private LocalDtoMapper localDtoMapper;
 
+    @GetMapping("/locals/find")
+    public ResponseEntity<?> getAllLocalsWhereDeliveryAddress(
+            @RequestParam String street,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortBy
+    ){
+
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Local> localsPage = localService.findAllByDeliveryAddressStreet(street, pageable);
+        List<LocalDto> localDtos = localsPage.stream().map(localDtoMapper::map).collect(Collectors.toList());
+        return ResponseEntity.ok(localDtos);
+    }
+
     @GetMapping("/locals")
     public ResponseEntity<?> getAllLocals(
             @RequestParam(defaultValue = "0") int page,
