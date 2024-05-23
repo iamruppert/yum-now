@@ -37,28 +37,19 @@ public class LocalController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "name") String sortBy
     ){
-        try {
-            Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-            Page<Local> localsPage = localService.findAll(pageable);
-            List<LocalDto> localDtos = localsPage.stream().map(localDtoMapper::map).collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Local> localsPage = localService.findAll(pageable);
+        List<LocalDto> localDtos = localsPage.stream().map(localDtoMapper::map).collect(Collectors.toList());
 
-            return ResponseEntity.ok(localDtos);
-        } catch(RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok(localDtos);
     }
 
     @PostMapping("/owner/local/create")
     public ResponseEntity<?> createLocal(
             @RequestBody @Valid LocalRequestDto localRequestDto
     ) {
-
-        try {
-            localService.create(localRequestDto.getEmail(),localRequestDto.getLocal());
-            return ResponseEntity.ok().body("Local created successfully.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        localService.create(localRequestDto.getEmail(), localRequestDto.getLocal());
+        return ResponseEntity.ok().body("Local created successfully.");
     }
 
     @PostMapping("/owner/local/{localId}/add-delivery-address")
@@ -66,16 +57,9 @@ public class LocalController {
             @PathVariable int localId,
             @Valid @RequestBody LocalDeliveryAddressDto localDeliveryAddressDto
     ){
-        try{
-
-            Local local = localService.findById(localId);
-            LocalDeliveryAddress localDeliveryAddress = localDeliveryAddressDtoMapper.map(localDeliveryAddressDto);
-
-            localDeliveryAddressService.create(local.getName(),localDeliveryAddress);
-
-            return ResponseEntity.ok().body("Delivery address added successfully");
-        }catch(RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        Local local = localService.findById(localId);
+        LocalDeliveryAddress localDeliveryAddress = localDeliveryAddressDtoMapper.map(localDeliveryAddressDto);
+        localDeliveryAddressService.create(local.getName(), localDeliveryAddress);
+        return ResponseEntity.ok().body("Delivery address added successfully");
     }
 }
