@@ -23,44 +23,34 @@ public class PurchaseController {
     private PurchaseService purchaseService;
     private FoodPurchaseDtoMapper purchaseDtoMapper;
 
+
     @PostMapping("/local/{id}/purchase")
     public ResponseEntity<?> createPurchase(
             @PathVariable int id,
             @Valid @RequestBody PurchaseDto purchaseDto
     ) {
-        try {
-            List<FoodPurchase> foodPurchases = purchaseDto.getFoodPurchases().stream()
-                    .map(purchaseDtoMapper::mapToFoodPurchase)
-                    .collect(Collectors.toList());
+        List<FoodPurchase> foodPurchases = purchaseDto.getFoodPurchases().stream()
+                .map(purchaseDtoMapper::mapToFoodPurchase)
+                .collect(Collectors.toList());
 
-            purchaseService.createPurchase(
-                    purchaseDto.getEmail(),
-                    purchaseDto.getCustomer(),
-                    localService.findById(id).getName(),
-                    foodPurchases,
-                    purchaseDto.getDeliveryAddress()
-            );
+        purchaseService.createPurchase(
+                purchaseDto.getEmail(),
+                purchaseDto.getCustomer(),
+                localService.findById(id).getName(),
+                foodPurchases,
+                purchaseDto.getDeliveryAddress()
+        );
 
-            return ResponseEntity.ok().body("Purchase created successfully.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok().body("Purchase created successfully.");
     }
 
     @PostMapping("/customer/purchases/{purchaseId}/cancel")
     public ResponseEntity<?> cancelPurchase(
             @PathVariable int purchaseId
     ) {
-
-        try {
-
-            Purchase purchase = purchaseService.findById(purchaseId);
-            purchaseService.cancelPurchase(purchase.getPurchaseNumber());
-            return ResponseEntity.ok().body("Purchase canceled successfully");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
+        Purchase purchase = purchaseService.findById(purchaseId);
+        purchaseService.cancelPurchase(purchase.getPurchaseNumber());
+        return ResponseEntity.ok().body("Purchase canceled successfully");
     }
 
 }

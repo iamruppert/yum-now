@@ -22,12 +22,8 @@ public class RegisterController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDto registerRequest) {
-        try {
-            RegisterRequest request = registerRequestDtoMapper.map(registerRequest);
-            registerService.register(request);
-            return ResponseEntity.ok("Successfully registered account");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        RegisterRequest request = registerRequestDtoMapper.map(registerRequest);
+        registerService.register(request);
+        return ResponseEntity.ok("Successfully registered account");
     }
 }

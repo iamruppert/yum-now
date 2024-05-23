@@ -25,14 +25,9 @@ public class FoodController {
             @PathVariable Integer id,
             @Valid @RequestBody FoodDto foodDto
     ) {
-
-        try {
-            Food food = foodDtoMapper.map(foodDto);
-            Local local = localService.findById(id);
-            foodService.create(local.getName(),food);
-            return ResponseEntity.ok("Food successfully added to local with id [%s]".formatted(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        Food food = foodDtoMapper.map(foodDto);
+        Local local = localService.findById(id);
+        foodService.create(local.getName(), food);
+        return ResponseEntity.ok("Food successfully added to local with id [%s]".formatted(id));
     }
 }
