@@ -18,4 +18,6 @@ public interface LocalDao {
     Local create(Local local);
 
     Page<Local> findAll(Pageable pageable);
+
+    Page<Local> findAllByDeliveryAddressStreet(String street, Pageable pageable);
 }

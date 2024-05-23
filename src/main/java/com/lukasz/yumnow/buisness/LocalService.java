@@ -21,6 +21,7 @@ public class LocalService {
 
     private OwnerService ownerService;
 
+
     public Local findByName(String name) {
         Optional<Local> optionalLocal = localDao.findByName(name);
         if (optionalLocal.isPresent()) {
@@ -65,5 +66,8 @@ public class LocalService {
 
     public Page<Local> findAll(Pageable pageable) {
         return localDao.findAll(pageable);
+    }
+    public Page<Local> findAllByDeliveryAddressStreet(String street, Pageable pageable){
+        return localDao.findAllByDeliveryAddressStreet(street, pageable);
     }
 }
