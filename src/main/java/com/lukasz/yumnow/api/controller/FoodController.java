@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
@@ -19,6 +21,13 @@ public class FoodController {
     public LocalService localService;
     public FoodService foodService;
     public FoodDtoMapper foodDtoMapper;
+
+    @GetMapping("/local/{id}/food")
+    public ResponseEntity<?> getFood(@PathVariable Integer id) {
+        Local local = localService.findById(id);
+        Set<Food> foods = local.getFoods();
+        return ResponseEntity.ok().body(foods);
+    }
 
     @PostMapping("/local/{id}/food/create-food")
     public ResponseEntity<?> addFood(
